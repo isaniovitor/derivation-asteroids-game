@@ -149,8 +149,21 @@ function loop() {
     projectile.update();
   });
 
-  enemies.forEach((enemy) => {
+  enemies.forEach((enemy, eIndex) => {
     enemy.update();
+
+    projectiles.forEach((projectile, pIndex) => {
+      const dist = Math.hypot(projectile.x - enemy.x, projectile.y - enemy.y);
+
+      if (dist - enemy.r - projectile.r < 1) {
+        // Evitar flash dos enimigos
+
+        setTimeout(() => {
+          enemies.splice(eIndex, 1);
+          projectiles.splice(pIndex, 1);
+        }, 0);
+      }
+    });
   });
 }
 
