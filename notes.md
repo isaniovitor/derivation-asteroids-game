@@ -9,3 +9,7 @@ https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects
 https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Math/cos
 
 https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/Math/atan2
+
+<!-- clearect -->
+
+https://developer.mozilla.org/pt-BR/docs/Web/API/CanvasRenderingContext2D/clearRect
