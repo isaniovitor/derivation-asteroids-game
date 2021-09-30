@@ -77,7 +77,7 @@ class Enemy {
   }
 }
 
-const player = new Player(canvas.width / 2, canvas.height / 2, 30, "blue");
+const player = new Player(canvas.width / 2, canvas.height / 2, 10, "white");
 
 // ----- windows events ----- //
 
@@ -95,10 +95,10 @@ addEventListener("click", (event) => {
       canvas.height / 2,
       5,
       {
-        vx: Math.cos(a),
-        vy: Math.sin(a),
+        vx: Math.cos(a) * 7,
+        vy: Math.sin(a) * 7,
       },
-      "red"
+      "white"
     )
   );
 });
@@ -109,7 +109,7 @@ function spwanEnemies() {
     // max -> 30, min -> 8
 
     const r = Math.random() * (30 - 8) + 8;
-    const color = "green";
+    const color = `hsl(${Math.random() * 360} , 50%, 50%)`;
 
     let x, y;
 
@@ -138,19 +138,42 @@ function spwanEnemies() {
 
 // ----- loop function ----- //
 function loop() {
-  requestAnimationFrame(loop);
+  const animationId = requestAnimationFrame(loop);
 
   // cleaning the canvas //
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  //ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // desing //
+  ctx.fillStyle = "rgba(0,0,0,0.2)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
 
   player.draw();
 
-  projectiles.forEach((projectile) => {
+  projectiles.forEach((projectile, pIndex) => {
     projectile.update();
+
+    // remove projectiles when they leave the screen
+
+    if (
+      projectile.x + projectile.r < 0 ||
+      projectile.x - projectile.r > canvas.width ||
+      projectile.y + projectile.r < 0 ||
+      projectile.y - projectile.r > canvas.height
+    ) {
+      setTimeout(() => {
+        projectiles.splice(pIndex, 1);
+      }, 0);
+    }
   });
 
   enemies.forEach((enemy, eIndex) => {
     enemy.update();
+
+    const dist = Math.hypot(player.x - enemy.x, player.y - enemy.y);
+
+    if (dist - enemy.r - player.r < 1) {
+      cancelAnimationFrame(animationId);
+    }
 
     projectiles.forEach((projectile, pIndex) => {
       const dist = Math.hypot(projectile.x - enemy.x, projectile.y - enemy.y);
