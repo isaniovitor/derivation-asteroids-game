@@ -8,14 +8,69 @@
 
     <style>
       body {
+        background-color: black;
+
         margin: 0;
-        overflow-y: hidden  ;
-        /* width: 100%;
-        height: 100vh; */
+        overflow-y: hidden;
+      }
+
+      h1 {
+        margin-bottom: 0;
+      }
+
+      h3 {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        color: wheat;
+
+        margin-top: 15px;
+        margin-left: 10px;
+      }
+
+      button {
+        background-color: rgb(0, 68, 255);
+
+        color: white;
+
+        border: none;
+        border-radius: 15px;
+        padding: 10px 50px;
+        margin: 0px 25px 16px 25px;
+      }
+
+      #wrapper {
+        position: absolute;
+
+        width: 100%;
+        height: 100%;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        align-content: center;
+      }
+
+      #container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: white;
       }
     </style>
   </head>
   <body>
+    <h3><span>Score: </span><span id="score">0</span></h3>
+
+    <div id="wrapper">
+      <div id="container">
+        <h1 id="overScore">0</h1>
+        <p>Points</p>
+        <button id="btn">Start Game</button>
+      </div>
+    </div>
+
     <canvas></canvas>
 
     <script src="/app/js/index.js"></script>

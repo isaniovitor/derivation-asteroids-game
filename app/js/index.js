@@ -2,6 +2,12 @@ console.log("hello");
 
 // ----- vars ----- //
 
+const over = document.querySelector("#overScore");
+const wrapper = document.querySelector("#wrapper");
+const scr = document.querySelector("#score");
+
+let score = 0;
+
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext("2d");
 
@@ -103,6 +109,13 @@ addEventListener("click", (event) => {
   );
 });
 
+btn.addEventListener("click", (event) => {
+  wrapper.style.visibility = "hidden";
+
+  loop();
+  spwanEnemies();
+});
+
 // ----- enemies functions ----- //
 function spwanEnemies() {
   setInterval(() => {
@@ -139,6 +152,8 @@ function spwanEnemies() {
 // ----- loop function ----- //
 function loop() {
   const animationId = requestAnimationFrame(loop);
+  console.log(enemies.length);
+
 
   // cleaning the canvas //
   //ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -172,23 +187,49 @@ function loop() {
     const dist = Math.hypot(player.x - enemy.x, player.y - enemy.y);
 
     if (dist - enemy.r - player.r < 1) {
+      // reset the enemies and score
+
+      score = 0;
+      scr.innerHTML = score;
+      //enemies = [];
+
+      enemies.forEach((enemy, eIndex) => {
+        enemies.splice(eIndex);
+      });
+
+      // play again
+      wrapper.style.visibility = "visible";
+
       cancelAnimationFrame(animationId);
+      // enemies = [];
     }
 
+    // collision enemy and projectile //
     projectiles.forEach((projectile, pIndex) => {
       const dist = Math.hypot(projectile.x - enemy.x, projectile.y - enemy.y);
 
       if (dist - enemy.r - projectile.r < 1) {
-        // Evitar flash dos enimigos
+        // increse score //
 
-        setTimeout(() => {
-          enemies.splice(eIndex, 1);
-          projectiles.splice(pIndex, 1);
-        }, 0);
+        score += 100;
+        scr.innerHTML = score;
+        over.innerHTML = score;
+
+        if (enemy.r - 10 > 10) {
+          enemy.r -= 10;
+
+          setTimeout(() => {
+            projectiles.splice(pIndex, 1);
+          }, 0);
+        } else {
+          // Evitar flash dos enimigos
+
+          setTimeout(() => {
+            enemies.splice(eIndex, 1);
+            projectiles.splice(pIndex, 1);
+          }, 0);
+        }
       }
     });
   });
 }
-
-loop();
-spwanEnemies();
